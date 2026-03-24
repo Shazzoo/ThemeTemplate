@@ -1,0 +1,16 @@
+{
+  "name": "vendor/theme-name",
+  "type": "laravel-theme",
+  "autoload": { "psr-4": { "Vendor\\ThemeName\\": "src/" } },
+  "scripts": {
+    "template:init": "@php bin/theme-init.php",
+    "theme:init": "@template:init"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Vendor\\ThemeName\\ThemeServiceProvider"
+      ]
+    }
+  }
+}
