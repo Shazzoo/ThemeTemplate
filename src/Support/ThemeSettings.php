@@ -1,6 +1,6 @@
 <?php
 
-namespace Vendor\ThemeName\Support;
+namespace TemplateVendor\ThemeName\Support;
 
 use App\Models\Navigation;
 use App\Models\Page;

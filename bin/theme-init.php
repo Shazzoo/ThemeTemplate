@@ -52,6 +52,9 @@ if ($vendorSlug === '' || $vendorNamespace === '' || $themeSlug === '' || $theme
 }
 
 $replacements = [
+    'TemplateVendor\\ThemeName' => $vendorNamespace.'\\'.$themeClass,
+    'template-vendor/theme-name' => $vendorSlug.'/'.$themeSlug,
+    'template-vendor-theme-name' => $vendorSlug.'-'.$themeSlug,
     'Vendor\\ThemeName' => $vendorNamespace.'\\'.$themeClass,
     'vendor/theme-name' => $vendorSlug.'/'.$themeSlug,
     'vendor-theme-name' => $vendorSlug.'-'.$themeSlug,

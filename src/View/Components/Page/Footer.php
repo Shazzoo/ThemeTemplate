@@ -1,6 +1,6 @@
 <?php
 
-namespace Vendor\ThemeName\View\Components\Page;
+namespace TemplateVendor\ThemeName\View\Components\Page;
 
 use Illuminate\View\Component;
 

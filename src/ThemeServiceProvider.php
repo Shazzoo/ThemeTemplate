@@ -1,6 +1,6 @@
 <?php
 
-namespace Vendor\ThemeName;
+namespace TemplateVendor\ThemeName;
 
 use App\Support\Settings\SettingsRegistry;
 use App\Support\Theming\BlockRegistry;
@@ -42,12 +42,12 @@ class ThemeServiceProvider extends ServiceProvider
 
         // COMPONENT NAMESPACE.
         Blade::componentNamespace(
-            'Vendor\\ThemeName\\View\\Components',
+            'TemplateVendor\\ThemeName\\View\\Components',
             $slug
         );
 
         // REGISTER THE THEME SETTINGS.
-        $settings->register(\Vendor\ThemeName\Support\ThemeSettings::class);
+        $settings->register(\TemplateVendor\ThemeName\Support\ThemeSettings::class);
 
     }
 }

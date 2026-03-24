@@ -1,6 +1,6 @@
 <?php
  
-namespace Vendor\ThemeName;
+namespace TemplateVendor\ThemeName;
  
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
@@ -9,7 +9,7 @@ class Theme
 {
     public static function slug(): string
     {
-        $namespace = static::class; // "Vendor\CorporateTheme\Theme"
+        $namespace = static::class; // "TemplateVendor\CorporateTheme\Theme"
  
         $base = explode('\\', $namespace) ?? 'theme'; // "CorporateTheme"
  

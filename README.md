@@ -22,9 +22,9 @@ This updates placeholders like:
 
 - `theme-name` -> `corporate-theme`
 - `ThemeName` -> `CorporateTheme`
-- `vendor/theme-name` -> `shazzoo/corporate-theme`
-- `Vendor\\ThemeName` -> `Shazzoo\\CorporateTheme`
-- `x-vendor-theme-name::...` -> `x-shazzoo-corporate-theme::...`
+- `template-vendor/theme-name` -> `shazzoo/corporate-theme`
+- `TemplateVendor\\ThemeName` -> `Shazzoo\\CorporateTheme`
+- `x-template-vendor-theme-name::...` -> `x-shazzoo-corporate-theme::...`
 
 
 ## Command options
@@ -49,6 +49,6 @@ Replace all occurrences of:
 
 - `theme-name`
 - `ThemeName`
-- `vendor/theme-name`
-- `Vendor\\ThemeName`
-- `vendor-theme-name`
+- `template-vendor/theme-name`
+- `TemplateVendor\\ThemeName`
+- `template-vendor-theme-name`
