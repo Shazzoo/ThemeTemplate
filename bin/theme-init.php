@@ -55,9 +55,12 @@ $namespace = $vendorNamespace.'\\'.$themeClass;
 $namespaceEscaped = str_replace('\\', '\\\\', $namespace);
 
 $replacements = [
+    'TemplateVendor\\\\ThemeName' => $namespaceEscaped,
     'TemplateVendor\\ThemeName' => $namespace,
     'template-vendor/theme-name' => $vendorSlug.'/'.$themeSlug,
     'template-vendor-theme-name' => $vendorSlug.'-'.$themeSlug,
+    'TemplateVendor' => $vendorNamespace,
+    'template-vendor' => $vendorSlug,
     'ThemeName' => $themeClass,
     'theme-name' => $themeSlug,
 ];
