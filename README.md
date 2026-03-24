@@ -38,7 +38,10 @@ php bin/theme-init.php --vendor=your-vendor --name="Your Theme"
 Useful flags:
 
 - `--dry-run` shows what would change without writing files
+- `--no-interaction` disables prompts (cleanup defaults to no)
 - `--help` shows usage
+
+After a successful run, the command asks if you want to remove the initializer (`bin/theme-init.php`) and its Composer scripts from the new repo.
 
 ## Manual setup (if you skip the command)
 

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 const SKIP_DIRECTORIES = ['.git', 'vendor', 'node_modules'];
-const SKIP_FILES = ['theme-init.php'];
+const SKIP_FILES = ['theme-init.php', 'README.md'];
 const BINARY_EXTENSIONS = [
     'png',
     'jpg',
@@ -35,6 +35,7 @@ if (isset($arguments['help'])) {
 $vendorInput = $arguments['vendor'] ?? $arguments['positional'][0] ?? null;
 $themeInput = $arguments['name'] ?? $arguments['positional'][1] ?? null;
 $dryRun = isset($arguments['dry-run']);
+$noInteraction = isset($arguments['no-interaction']);
 
 if (! is_string($vendorInput) || trim($vendorInput) === '' || ! is_string($themeInput) || trim($themeInput) === '') {
     usage(1);
@@ -82,6 +83,21 @@ if ($updatedFiles !== []) {
     }
 }
 
+if (! $dryRun) {
+    $shouldCleanup = confirmAction(
+        'Delete bin/theme-init.php and remove init scripts from composer.json?',
+        true,
+        $noInteraction
+    );
+
+    if ($shouldCleanup) {
+        cleanupInitializer($rootPath);
+        fwrite(STDOUT, "Initializer command removed from this repo.\n");
+    } else {
+        fwrite(STDOUT, "Cleanup skipped.\n");
+    }
+}
+
 exit(0);
 
 function parseArguments(array $argv): array
@@ -98,6 +114,11 @@ function parseArguments(array $argv): array
 
         if ($arg === '--dry-run') {
             $parsed['dry-run'] = true;
+            continue;
+        }
+
+        if ($arg === '--no-interaction' || $arg === '-n') {
+            $parsed['no-interaction'] = true;
             continue;
         }
 
@@ -146,6 +167,7 @@ Options:
   --vendor   Package vendor, for example "acme"
   --name     Theme name, for example "Corporate Theme"
   --dry-run  Show files that would be changed
+  --no-interaction  Never prompt (use defaults)
   --help     Show this help message
 
 TXT;
@@ -228,4 +250,70 @@ function applyTemplateReplacements(string $rootPath, array $replacements, bool $
     sort($updatedFiles);
 
     return [$updatedFiles, $totalReplacements];
+}
+
+function confirmAction(string $question, bool $defaultNo, bool $noInteraction): bool
+{
+    if ($noInteraction || ! isInteractiveStdin()) {
+        return ! $defaultNo;
+    }
+
+    $suffix = $defaultNo ? ' [y/N]: ' : ' [Y/n]: ';
+    fwrite(STDOUT, $question.$suffix);
+    $response = trim((string) fgets(STDIN));
+
+    if ($response === '') {
+        return ! $defaultNo;
+    }
+
+    return in_array(strtolower($response), ['y', 'yes'], true);
+}
+
+function isInteractiveStdin(): bool
+{
+    if (function_exists('stream_isatty')) {
+        return stream_isatty(STDIN);
+    }
+
+    if (function_exists('posix_isatty')) {
+        return posix_isatty(STDIN);
+    }
+
+    return false;
+}
+
+function cleanupInitializer(string $rootPath): void
+{
+    $scriptPath = $rootPath.'/bin/theme-init.php';
+    if (is_file($scriptPath)) {
+        @unlink($scriptPath);
+    }
+
+    $composerPath = $rootPath.'/composer.json';
+    if (! is_file($composerPath)) {
+        return;
+    }
+
+    $composerContents = file_get_contents($composerPath);
+    if (! is_string($composerContents)) {
+        return;
+    }
+
+    $composer = json_decode($composerContents, true);
+    if (! is_array($composer) || ! isset($composer['scripts']) || ! is_array($composer['scripts'])) {
+        return;
+    }
+
+    unset($composer['scripts']['template:init'], $composer['scripts']['theme:init']);
+
+    if ($composer['scripts'] === []) {
+        unset($composer['scripts']);
+    }
+
+    $encoded = json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    if (! is_string($encoded)) {
+        return;
+    }
+
+    file_put_contents($composerPath, $encoded."\n");
 }
