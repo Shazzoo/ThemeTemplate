@@ -51,18 +51,15 @@ if ($vendorSlug === '' || $vendorNamespace === '' || $themeSlug === '' || $theme
     exit(1);
 }
 
+$namespace = $vendorNamespace.'\\'.$themeClass;
+$namespaceEscaped = str_replace('\\', '\\\\', $namespace);
+
 $replacements = [
-    'TemplateVendor\\ThemeName' => $vendorNamespace.'\\'.$themeClass,
+    'TemplateVendor\\ThemeName' => $namespace,
     'template-vendor/theme-name' => $vendorSlug.'/'.$themeSlug,
     'template-vendor-theme-name' => $vendorSlug.'-'.$themeSlug,
-    'Vendor\\ThemeName' => $vendorNamespace.'\\'.$themeClass,
-    'vendor/theme-name' => $vendorSlug.'/'.$themeSlug,
-    'vendor-theme-name' => $vendorSlug.'-'.$themeSlug,
     'ThemeName' => $themeClass,
     'theme-name' => $themeSlug,
-    'Shazzoo\\ThemeName' => $vendorNamespace.'\\'.$themeClass,
-    'shazzoo/theme-name' => $vendorSlug.'/'.$themeSlug,
-    'shazzoo-theme-name' => $vendorSlug.'-'.$themeSlug,
 ];
 
 $rootPath = realpath(__DIR__.'/..');
